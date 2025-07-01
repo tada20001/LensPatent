@@ -219,7 +219,6 @@ with main_tab_dashboard:
             st.subheader("📈 연도별 출원 동향")
             df['application_year'] = pd.to_numeric(df['application_year'], errors='coerce')
             yearly_counts = df['application_year'].value_counts().sort_index()
-            # ★★★ 색상 지정 코드가 없어도 config.toml의 primaryColor가 자동으로 적용됩니다. ★★★
             st.bar_chart(yearly_counts)
 
             # 2. 핵심 출원인
