@@ -168,8 +168,15 @@ with main_tab_search:
                 if error: st.error(f"다운로드 중 오류 발생: {error}")
                 elif temp_csv_path:
                     progress_bar.success("데이터 수집 완료! 파일 생성 및 대시보드 데이터 준비 중...")
+
                     with st.spinner("파일 변환 및 대시보드 데이터 로딩 중..."):
-                        df_all = pd.read_csv(temp_csv_path)
+                        try:
+                            df_all = pd.read_csv(temp_csv_path)
+                            df_all.drop_duplicates(subset=['lens_id'], keep='first', inplace=True)
+                        except Exception as e:
+                            st.error(f"파일 변환 중 오류 발생: {e}")
+                            df_all = pd.DataFrame()
+
                         # ★★★ 핵심: 수집된 데이터를 대시보드 탭을 위해 세션 상태에 저장 ★★★
                         st.session_state.df_for_dashboard = df_all.copy()
 
